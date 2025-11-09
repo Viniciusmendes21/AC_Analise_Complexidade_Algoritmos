@@ -2,7 +2,7 @@
 
 ### Curso: Engenharia de Computação
 
-### Professor: CASSIUS FIGUEIREDO
+### Professor: Cassius Figueiredo
 
 ## Integrantes
 - Bernardo Bounzoument James - 2021
