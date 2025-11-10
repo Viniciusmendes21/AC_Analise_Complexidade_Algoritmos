@@ -2,7 +2,6 @@ from collections import deque, defaultdict
 
 
 def BFS(arestas, direcionado=False, inicio=None):
-    # se receber um dicionário, usa-o como lista de adjacência
     if isinstance(arestas, dict):
         g = {}
         for k, vs in arestas.items():
@@ -57,10 +56,11 @@ def BFS(arestas, direcionado=False, inicio=None):
     componentes = []
     visto = set()
 
-    def bfs_component(raiz):
-        q = deque([raiz])
-        visto.add(raiz)
-        distc = {raiz: 0}
+    # BFS inlined (antes função auxiliar)
+    if inicio and inicio in g:
+        q = deque([inicio])
+        visto.add(inicio)
+        distc = {inicio: 0}
         ordem = []
         while q:
             u = q.popleft()
@@ -70,17 +70,24 @@ def BFS(arestas, direcionado=False, inicio=None):
                     visto.add(nb)
                     distc[nb] = distc[u] + 1
                     q.append(nb)
-        return ordem, distc
-
-    if inicio and inicio in g:
-        ordem, distc = bfs_component(inicio)
         if ordem:
             componentes.append(f"[{','.join(f'{x}={distc.get(x,0)}' for x in ordem)}]")
 
     for v in sorted(g.keys()):
         if v in visto:
             continue
-        ordem, distc = bfs_component(v)
+        q = deque([v])
+        visto.add(v)
+        distc = {v: 0}
+        ordem = []
+        while q:
+            u = q.popleft()
+            ordem.append(u)
+            for nb in sorted(g.get(u, [])):
+                if nb not in visto:
+                    visto.add(nb)
+                    distc[nb] = distc[u] + 1
+                    q.append(nb)
         if ordem:
             componentes.append(f"[{','.join(f'{x}={distc.get(x,0)}' for x in ordem)}]")
 
