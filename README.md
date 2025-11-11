@@ -19,7 +19,7 @@ Este projeto fornece uma interface web interativa para a visualização passo a 
 
 A aplicação foi construída inteiramente em Python utilizando o framework **Streamlit** e as bibliotecas **NetworkX** e **Graphviz** para a renderização dos grafos.
 
-## 🚀 Como Executar (Instruções para Windows)
+## Como Executar (Instruções para Windows)
 
 Este projeto foi empacotado com scripts de automação (`.bat`) para facilitar a instalação e execução.
 
