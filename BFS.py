@@ -1,29 +1,29 @@
-from collections import deque, defaultdict
+from collections import deque
 
 
 def BFS(arestas, direcionado=False, inicio=None):
+    g = {}
     if isinstance(arestas, dict):
-        g = {}
         for k, vs in arestas.items():
-            key = str(k).strip()
-            g.setdefault(key, [])
+            u = str(k).strip()
+            if not u:
+                continue
             for v in vs:
                 if v is None:
                     continue
-                nb = str(v).strip()
-                if nb:
-                    g[key].append(nb)
+                nv = str(v).strip()
+                if nv:
+                    g.setdefault(u, []).append(nv)
         if not direcionado:
             for u, nbrs in list(g.items()):
                 for v in nbrs:
-                    g.setdefault(v, [])
-                    if u not in g[v]:
+                    if u not in g.setdefault(v, []):
                         g[v].append(u)
     else:
-        g = defaultdict(list)
-        tokens = [t.strip() for t in arestas.split(',')] if isinstance(arestas, str) else list(arestas)
-
+        tokens = arestas.split(',') if isinstance(arestas, str) else list(arestas)
         for tok in tokens:
+            if tok is None:
+                continue
             if isinstance(tok, (list, tuple)) and len(tok) >= 2:
                 a, b = str(tok[0]).strip(), str(tok[1]).strip()
             else:
@@ -33,52 +33,27 @@ def BFS(arestas, direcionado=False, inicio=None):
                 if '-' in s:
                     a, b = (p.strip() for p in s.split('-', 1))
                 else:
-                    if len(s) > 1:
-                        raise ValueError(f"Token inválido: '{s}'. Use vértice único (ex.: 'G') ou arestas explícitas (ex.: 'G-H,G-I').")
                     g.setdefault(s, [])
                     continue
-
             if not a or not b:
                 continue
-
             if a == b:
-                # self-loop
                 g.setdefault(a, []).append(b)
-                if not direcionado:
-                    g.setdefault(a, []).append(b)
             else:
                 g.setdefault(a, []).append(b)
                 if not direcionado:
                     g.setdefault(b, []).append(a)
 
-        g = dict(g)
-
     componentes = []
     visto = set()
+    nodes = [inicio] + sorted(g.keys()) if inicio and inicio in g else sorted(g.keys())
 
-    # BFS inlined (antes função auxiliar)
-    if inicio and inicio in g:
-        q = deque([inicio])
-        visto.add(inicio)
-        distc = {inicio: 0}
-        ordem = []
-        while q:
-            u = q.popleft()
-            ordem.append(u)
-            for nb in sorted(g.get(u, [])):
-                if nb not in visto:
-                    visto.add(nb)
-                    distc[nb] = distc[u] + 1
-                    q.append(nb)
-        if ordem:
-            componentes.append(f"[{','.join(f'{x}={distc.get(x,0)}' for x in ordem)}]")
-
-    for v in sorted(g.keys()):
+    for v in nodes:
         if v in visto:
             continue
         q = deque([v])
         visto.add(v)
-        distc = {v: 0}
+        dist = {v: 0}
         ordem = []
         while q:
             u = q.popleft()
@@ -86,10 +61,10 @@ def BFS(arestas, direcionado=False, inicio=None):
             for nb in sorted(g.get(u, [])):
                 if nb not in visto:
                     visto.add(nb)
-                    distc[nb] = distc[u] + 1
+                    dist[nb] = dist[u] + 1
                     q.append(nb)
         if ordem:
-            componentes.append(f"[{','.join(f'{x}={distc.get(x,0)}' for x in ordem)}]")
+            componentes.append(f"[{','.join(f'{x}={dist.get(x,0)}' for x in ordem)}]")
 
     return componentes
 
