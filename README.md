@@ -40,8 +40,8 @@ Este projeto foi empacotado com scripts de automação (`.bat`) para facilitar a
 4.  Quando terminar, a janela mostrará "Setup completo!" e pedirá para você pressionar uma tecla.
 
 ### Passo 2: Executar o Aplicativo (Fazer sempre que quiser usar)
-
 1.  Na mesma pasta, dê um clique duplo no arquivo **`run.bat`**.
 2.  O terminal será aberto e iniciará o servidor Streamlit.
-3.  Uma nova aba será aberta automaticamente no seu navegador padrão, exibindo o aplicativo.
-4.  Para parar o aplicativo, basta fechar a janela preta do terminal.
+3.  Caso apareça "Email:  " aperte Enter para continuar.
+4.  Uma nova aba será aberta automaticamente no seu navegador padrão, exibindo o aplicativo.
+5.  Para parar o aplicativo, basta fechar a janela preta do terminal.
